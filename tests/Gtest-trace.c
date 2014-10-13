@@ -213,6 +213,8 @@ sighandler (int signal, void *siginfo UNUSED, void *context)
 #endif
 #elif defined UNW_TARGET_ARM
       printf (" @ %lx", (unsigned long) uc->uc_mcontext.arm_pc);
+#elif defined UNW_TARGET_MIPS
+      printf (" @ %lx", (unsigned long) uc->uc_mcontext.pc);
 #endif
       printf ("\n");
     }

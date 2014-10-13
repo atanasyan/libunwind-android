@@ -30,6 +30,39 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 PROTECTED int
 unw_is_signal_frame (unw_cursor_t *cursor)
 {
+#ifdef __linux__
+  struct cursor *c = (struct cursor *) cursor;
+  unw_word_t w0, w1, ip;
+  unw_addr_space_t as;
+  unw_accessors_t *a;
+  void *arg;
+  int ret;
+
+  as = c->dwarf.as;
+  a = unw_get_accessors (as);
+  arg = c->dwarf.as_arg;
+
+  ip = c->dwarf.ip;
+
+  /* syscall */
+  if ((ret = (*a->access_mem) (as, ip + 4, &w1, 0, arg)) < 0)
+    return ret;
+  if ((w1 & 0xffffffff) != 0x0c)
+    return 0;
+
+  /* li v0, 0x1061 (rt) or li v0, 0x1017 */
+  if ((ret = (*a->access_mem) (as, ip, &w0, 0, arg)) < 0)
+    return ret;
+  switch (w0 & 0xffffffff) {
+  case 0x24021061:
+    return 1;
+  case 0x24021017:
+    return 2;
+  default:
+    return 0;
+  }
+#else
   printf ("%s: implement me\n", __FUNCTION__);
   return -UNW_ENOINFO;
+#endif
 }

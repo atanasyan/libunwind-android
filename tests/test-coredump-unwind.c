@@ -217,6 +217,8 @@ void handle_sigsegv(int sig, siginfo_t *info, void *ucontext)
 	ip = uc->uc_mcontext.gregs[REG_RIP];
 #elif defined(UNW_TARGET_ARM)
 	ip = uc->uc_mcontext.arm_pc;
+#elif defined(UNW_TARGET_MIPS)
+  ip = uc->uc_mcontext.pc;
 #endif
 #elif defined(__FreeBSD__)
 #ifdef __i386__

@@ -103,9 +103,9 @@ typedef enum
        previous frame.  */
     UNW_MIPS_CFA,
 
-    UNW_TDEP_LAST_REG = UNW_MIPS_R31,
+    UNW_TDEP_LAST_REG = UNW_MIPS_PC,
 
-    UNW_TDEP_IP = UNW_MIPS_R31,
+    UNW_TDEP_IP = UNW_MIPS_PC,
     UNW_TDEP_SP = UNW_MIPS_R29,
     UNW_TDEP_EH = UNW_MIPS_R0   /* FIXME.  */
   }
