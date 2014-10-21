@@ -380,8 +380,8 @@ main(int argc UNUSED, char **argv)
 
   if (testcase &&
        (  strcmp(test_names[0], "a")
-       || strcmp(test_names[1], "b")
-       || strcmp(test_names[2], "b")
+       || (strcmp(test_names[1], "b") && strcmp(test_names[1], "c"))
+       || (strcmp(test_names[2], "b") && strcmp(test_names[2], "c"))
        || strcmp(test_names[3], "main")
        )
      )

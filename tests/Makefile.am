@@ -147,7 +147,7 @@ LIBUNWIND_ELF = $(top_builddir)/src/libunwind-elfxx.la
 endif
 
 LIBUNWIND_setjmp = $(top_builddir)/src/libunwind-setjmp.la	\
-		   $(LIBUNWIND_ELF) $(LIBUNWIND)
+		   $(LIBUNWIND_ELF) $(LIBUNWIND) $(LIBUNWIND_local)
 
 test_async_sig_LDADD = $(LIBUNWIND_local) -lpthread
 test_flush_cache_LDADD = $(LIBUNWIND_local)

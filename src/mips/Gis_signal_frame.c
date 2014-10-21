@@ -53,14 +53,30 @@ unw_is_signal_frame (unw_cursor_t *cursor)
   /* li v0, 0x1061 (rt) or li v0, 0x1017 */
   if ((ret = (*a->access_mem) (as, ip, &w0, 0, arg)) < 0)
     return ret;
-  switch (w0 & 0xffffffff) {
-  case 0x24021061:
-    return 1;
-  case 0x24021017:
-    return 2;
-  default:
-    return 0;
-  }
+
+  switch (c->dwarf.as->abi)
+    {
+    case UNW_MIPS_ABI_O32:
+      switch (w0 & 0xffffffff)
+        {
+        case 0x24021061:
+          return 1;
+        case 0x24021017:
+          return 2;
+        default:
+          return 0;
+        }
+    case UNW_MIPS_ABI_N64:
+      switch (w0 & 0xffffffff)
+        {
+        case 0x2402145b:
+          return 1;
+        default:
+          return 0;
+        }
+    default:
+      return 0;
+    }
 #else
   printf ("%s: implement me\n", __FUNCTION__);
   return -UNW_ENOINFO;

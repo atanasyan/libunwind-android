@@ -59,7 +59,7 @@ tdep_uc_addr (ucontext_t *uc, int reg)
 {
   char *addr = uc_addr (uc, reg);
 
-  if (reg >= UNW_MIPS_R0 && reg <= UNW_MIPS_R31
+  if (((reg >= UNW_MIPS_R0 && reg <= UNW_MIPS_R31) || reg == UNW_MIPS_PC)
       && tdep_big_endian (unw_local_addr_space)
       && unw_local_addr_space->abi == UNW_MIPS_ABI_O32)
     addr += 4;
@@ -122,6 +122,12 @@ access_mem (unw_addr_space_t as, unw_word_t addr, unw_word_t *val, int write,
         {
 #endif
           *val = *(unw_word_t *) (uintptr_t) addr;
+          if (as->abi == UNW_MIPS_ABI_O32) {
+            if (tdep_big_endian(as))
+              *val >>= 32;
+            else
+              *val &= 0xffffffff;
+          }
           Debug (16, "mem[%llx] -> %llx\n", (long long) addr, (long long) *val);
 #ifdef UNW_LOCAL_ONLY
         }

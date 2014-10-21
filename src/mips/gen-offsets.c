@@ -24,6 +24,7 @@ main (void)
   UC ("MCONTEXT", uc_mcontext);
   UC ("SIGMASK", uc_sigmask);
 
+  UC ("MCONTEXT_PC", uc_mcontext.pc);
   UC ("MCONTEXT_GREGS", uc_mcontext.gregs);
 
   return 0;
