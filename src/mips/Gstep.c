@@ -92,10 +92,6 @@ mips_heuristic_step (struct cursor *c)
     if ((ret = dwarf_get (&c->dwarf, DWARF_LOC (pc, 0), &op)) < 0)
       return ret;
 
-    /* subu sp, sp, reg */
-    if ((op & 0xffe0ffff) == 0x03a0e823)
-      Debug (2, "XXX at 0x%016x\n", pc);
-
     /* move ra, zero */
     if ((op & 0xffffffff) == 0x0000f821) {
       Debug (2, "'move ra, zero' stop condition at 0x%016x\n", pc);
